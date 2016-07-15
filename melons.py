@@ -38,9 +38,6 @@ class DomesticMelonOrder(AbstractMelonOrder):
     def __init__(self, species, qty):
         super(DomesticMelonOrder, self).__init__(species, qty, 'USA')
 
-    def get_total(self):
-        return super(DomesticMelonOrder, self).get_total()
-
 
 class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
@@ -56,4 +53,17 @@ class InternationalMelonOrder(AbstractMelonOrder):
         else:
             total = subtotal + flat_fee
         return total
+
+
+class GovernmentMelonOrder(AbstractMelonOrder):
+    """Secret government melon order."""
+
+    order_type = "government"
+    tax = 0
+    passed_inspection = False
+
+    def mark_inspection(self, passed):
+        self.passed_inspection = True
+
+
 
