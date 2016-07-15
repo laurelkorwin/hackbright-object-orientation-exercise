@@ -2,6 +2,9 @@
 
 import random
 
+class TooManyMelonsError(ValueError):
+    pass
+
 class AbstractMelonOrder(object):
     """Abstract parent class for melon orders."""
     
@@ -9,8 +12,10 @@ class AbstractMelonOrder(object):
 
     def __init__(self, species, qty, country_code=None):
         """Initialize melon order attributes"""
-        self.species = species
+        if qty > 100:
+            raise TooManyMelonsError("Orders cannot exceed 100 melons.")
         self.qty = qty
+        self.species = species
         if country_code:
             self.country_code = country_code
 
