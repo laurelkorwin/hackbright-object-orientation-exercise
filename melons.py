@@ -1,23 +1,31 @@
 """This file should have our order classes in it."""
 
+import random
+
 class AbstractMelonOrder(object):
     """Abstract parent class for melon orders."""
     
-    def __init__(self, species, qty, country_code):
+    shipped = False
+
+    def __init__(self, species, qty, country_code=None):
         """Initialize melon order attributes"""
         self.species = species
         self.qty = qty
-        self.country_code = country_code
-        self.shipped = False
+        if country_code:
+            self.country_code = country_code
 
     def mark_shipped(self):
         """Set shipped to true."""
 
         self.shipped = True
 
+    def get_base_price(self):
+        """Calculate base price."""
+        return random.randint(5,9)
+
     def get_total(self):
-        """Calculate price."""
-        base_price = 5
+        """Calculate total price."""
+        base_price = self.get_base_price()
         if self.species.lower() == "christmas melon":
             base_price = base_price * 1.5
         total = (1 + self.tax) * self.qty * base_price
@@ -32,12 +40,10 @@ class AbstractMelonOrder(object):
 class DomesticMelonOrder(AbstractMelonOrder):
     """A domestic (in the US) melon order."""
 
+    country_code = "USA"
     order_type = "domestic"
     tax = 0.08
-
-    def __init__(self, species, qty):
-        super(DomesticMelonOrder, self).__init__(species, qty, 'USA')
-
+    
 
 class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
@@ -64,6 +70,3 @@ class GovernmentMelonOrder(AbstractMelonOrder):
 
     def mark_inspection(self, passed):
         self.passed_inspection = passed
-
-
-
